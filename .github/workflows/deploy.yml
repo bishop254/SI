@@ -19,9 +19,6 @@ jobs:
     # Here we are configuring build matrix that allows you to perform certain operations on your code
     # with different software/Operating system configurations.
     # In our case, we are only running it for Node v12.*. but you can multiple entries in that array.
-    strategy:
-      matrix:
-        node-version: [12.x]
       
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -29,11 +26,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # As you can see below we are using matrix.node-version => it means it will execute for all possible combinations
       # provided matrix keys array(in our case only one key => node-version)
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1.4.3
-        with:
-          node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v3
+      - name: Use Node.js env
+        uses: actions/setup-node@v3.4.1
 
       # Install the node modules
       - name: NPM Install
@@ -53,7 +48,7 @@ jobs:
           # --delete => permanently deletes files in S3 bucket that are not present in latest build
           args: --acl public-read --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_PRODUCTION_BUCKET_NAME }} # S3 bucket name
+          AWS_S3_BUCKET: 'mysitest'
           # note: use IAM role with limited role for below access-key-id and secret-access-key
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }} # Access Key ID
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Access Secret Key
