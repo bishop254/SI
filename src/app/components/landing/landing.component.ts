@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import {
+  FacebookLoginProvider,
+  GoogleLoginProvider,
+} from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-landing',
@@ -27,5 +32,11 @@ export class LandingComponent {
     })
   );
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private authServ: SocialAuthService
+  ) {}
+  googleLogin() {
+    this.authServ.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
 }
